@@ -1,8 +1,6 @@
 <template>
   <div class="container-lg">
-    <div class="loader" v-if="store.onLoad">
-      <h2 class="text-center py-4">Sto Caricando...</h2>
-    </div>
+    <LoaderComponent v-if="store.onLoad" />
     <Transition name="slide-fade">
       <div class="row" v-if="!store.onLoad">
         <div
@@ -20,10 +18,11 @@
 <script>
 import { store } from "../store";
 import CardComponent from "./CardComponent.vue";
+import LoaderComponent from "./LoaderComponent.vue";
 
 export default {
   name: "CharacterListComponent",
-  components: { CardComponent },
+  components: { CardComponent, LoaderComponent },
   data() {
     return {
       store,
@@ -42,14 +41,6 @@ export default {
   }
   @media screen and (max-width: 768px) {
     width: calc(100% / 2);
-  }
-}
-.loader {
-  h2 {
-    text-transform: uppercase;
-    font-size: 2rem;
-    font-weight: 700;
-    color: $blue;
   }
 }
 .slide-fade-enter-active {
