@@ -1,14 +1,19 @@
 <template>
   <div>
-    <h2 class="text-white mb-0">Found {{ foundNum }} characters</h2>
+    <h2 class="text-white mb-0">
+      Found {{ store.characterListArray.length }} characters
+    </h2>
   </div>
 </template>
 
 <script>
+import { store } from "../store";
 export default {
   name: "CharFoundComponent",
-  props: {
-    foundNum: Number,
+  data() {
+    return {
+      store,
+    };
   },
 };
 </script>

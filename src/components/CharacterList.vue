@@ -1,11 +1,15 @@
 <template>
   <div class="container-lg">
-    <div class="loader" v-if="onLoad">
+    <div class="loader" v-if="store.onLoad">
       <h2 class="text-center py-4">Sto Caricando...</h2>
     </div>
     <Transition name="slide-fade">
-      <div class="row" v-if="!onLoad">
-        <div class="mycol p-3" v-for="(item, index) in characters" :key="item.id">
+      <div class="row" v-if="!store.onLoad">
+        <div
+          class="mycol p-3"
+          v-for="(item, index) in store.characterListArray"
+          :key="item.id"
+        >
           <CardComponent :character="item" />
         </div>
       </div>
@@ -14,12 +18,17 @@
 </template>
 
 <script>
+import { store } from "../store";
 import CardComponent from "./CardComponent.vue";
 
 export default {
   name: "CharacterListComponent",
-  props: ["characters", "onLoad"],
   components: { CardComponent },
+  data() {
+    return {
+      store,
+    };
+  },
 };
 </script>
 
@@ -27,6 +36,13 @@ export default {
 @use '../assets/styles/partials/variables' as *;
 .mycol {
   width: calc(100% / 5);
+
+  @media screen and (max-width: 992px) {
+    width: calc(100% / 3);
+  }
+  @media screen and (max-width: 768px) {
+    width: calc(100% / 2);
+  }
 }
 .loader {
   h2 {

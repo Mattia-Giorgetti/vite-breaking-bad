@@ -1,9 +1,9 @@
 <template>
   <HeaderComponent />
-  <SearchComponent />
+  <SearchComponent @filtercharacter="getAPIChar" />
   <main class="container-md p-4">
-    <CharFoundComponent :foundNum="characterListArray.length" />
-    <CharacterList :characters="characterListArray" :onLoad="onLoad" />
+    <CharFoundComponent />
+    <CharacterList />
   </main>
 </template>
 
@@ -13,23 +13,29 @@ import CharacterList from "./components/CharacterList.vue";
 import CharFoundComponent from "./components/CharFoundComponent.vue";
 import HeaderComponent from "./components/HeaderComponent.vue";
 import SearchComponent from "./components/SearchComponent.vue";
+import { store } from "./store";
 
 export default {
   components: { HeaderComponent, SearchComponent, CharFoundComponent, CharacterList },
   data() {
     return {
-      apiURL: "https://www.breakingbadapi.com/api/characters",
-      characterListArray: [],
-      onLoad: false,
+      store,
+      endPoint: "characters",
     };
   },
   methods: {
     getAPIChar() {
-      this.onLoad = true;
-      axios.get(this.apiURL).then((result) => {
-        this.characterListArray = [...result.data];
-        this.onLoad = false;
-        // console.log(this.characterListArray);
+      store.errorMsg = "";
+      let urlApi = store.apiURL + this.endPoint;
+      if (store.searchCategory == "Better Call Saul") {
+        urlApi = urlApi + "?category=Better+Call+Saul";
+      } else if (store.searchCategory == "Breaking Bad") {
+        urlApi = urlApi + "?category=Breaking+Bad";
+      }
+      store.onLoad = true;
+      axios.get(urlApi).then((result) => {
+        store.characterListArray = [...result.data];
+        store.onLoad = false;
       });
     },
   },
